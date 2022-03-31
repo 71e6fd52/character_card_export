@@ -33,6 +33,14 @@
       <input type="radio" id="delete_omega" name="omega">
       <label for="delete_omega" class="selection">去除现代技能</label>
     </div>
+    <div class="full-line">
+      <label for="format">导出格式:</label>
+      <select name="format" id="format">
+        <option value="json" selected>JSON</option>
+        <option value="hktrpg">HKTRPG</option>
+      </select>
+    </div>
+
     <button type="button" class="collapsible">高级选项</button>
     <div class="advanced container">
       <div class="item">
@@ -67,7 +75,7 @@
     <button type="button" id="submit">提交</button>
   </div>
   <hr>
-  <p id="result"></p>
+  <pre id="result"></pre>
 
   <a class="github-fork-ribbon right-bottom fixed" href="https://github.com/71e6fd52/character_card_export"
     data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>

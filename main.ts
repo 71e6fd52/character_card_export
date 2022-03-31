@@ -35,6 +35,8 @@ async function handleFileAsync(e: Event) {
   const OMEGA = (document.getElementById("delete_omega") as HTMLInputElement).checked ?
     'delete' : 'remain';
 
+  const FORMAT = getValue("format") as 'json' | 'hktrpg'
+
   out.innerText = '';
   const file = files[0];
   const data = await file.arrayBuffer();
@@ -84,7 +86,14 @@ async function handleFileAsync(e: Event) {
     }
   }
 
-  out.innerText = JSON.stringify(result);
+  switch (FORMAT) {
+    case 'json':
+      out.innerText = JSON.stringify(result);
+      break;
+    case 'hktrpg':
+    default:
+      out.innerText = 'unsupported'
+  }
 }
 
 (document.getElementById("submit") as HTMLElement).addEventListener("click", handleFileAsync, false);
