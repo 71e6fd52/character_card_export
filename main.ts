@@ -45,20 +45,23 @@ async function handleFileAsync(e: Event) {
 
   let j = FIRST_COLUMN;
   for (let i = START_ROW; i <= END_ROW || j == FIRST_COLUMN; ++i) {
+    if (i > END_ROW) { throw "iterate out of table" }
+
     const name = isMergedStart(sheet, { c: j + 2, r: i }) ?
       getCell(sheet, { c: j + 2, r: i }) :
       getCell(sheet, { c: j, r: i })
-    if (name == undefined) { continue; }
     const init = getCell(sheet, { c: j + 4, r: i })
-    if (init == undefined) { continue; }
     const value = getCell(sheet, { c: j + 12, r: i })
-    if (value == undefined) { continue; }
-    const init_v = init.v as number;
-    const value_v = value.v as number;
 
     if (i == END_ROW && j == FIRST_COLUMN) {
       j = SECOND_COLUMN; i = START_ROW;
     }
+
+    if (name == undefined) { continue; }
+    if (init == undefined) { continue; }
+    if (value == undefined) { continue; }
+    const init_v = init.v as number;
+    const value_v = value.v as number;
 
     let name_v = name.w!;
     if (name_v.endsWith("Ω")) {
@@ -85,3 +88,14 @@ async function handleFileAsync(e: Event) {
 }
 
 (document.getElementById("submit") as HTMLElement).addEventListener("click", handleFileAsync, false);
+
+// collapsible
+(document.getElementsByClassName("collapsible")[0] as HTMLElement).addEventListener("click", function () {
+  this.classList.toggle("active");
+  var content = this.nextElementSibling as HTMLElement;
+  if (content.style.display === "flex") {
+    content.style.display = "none";
+  } else {
+    content.style.display = "flex";
+  }
+});
