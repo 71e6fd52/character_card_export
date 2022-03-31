@@ -1,10 +1,19 @@
-build: main.js style.css
+build: dist/main.js dist/style.css dist/index.html dist/xlsx.mjs
 
-main.js: main.ts xlsx.mjs xlsx.d.mts
+release: dist/main.js dist/style.css dist/index.html dist/xlsx.mjs
+	ghp-import -c coccard.yahvk.moe -p dist
+
+dist/main.js: main.ts xlsx.mjs xlsx.d.mts
 	tsc
 
-style.css: style.sass
-	sass style.sass style.css
+dist/style.css: style.sass
+	sass style.sass dist/style.css
+
+dist/index.html: index.html
+	cp index.html dist/index.html
+
+dist/xlsx.mjs: bower_components/js-xlsx/xlsx.mjs
+	cp bower_components/js-xlsx/xlsx.mjs dist/xlsx.mjs
 
 xlsx.mjs: bower_components/js-xlsx/xlsx.mjs
 	ln -sr bower_components/js-xlsx/xlsx.mjs xlsx.mjs
@@ -15,4 +24,4 @@ xlsx.d.mts: bower_components/js-xlsx/types/index.d.ts
 bower_components/js-xlsx/xlsx.mjs bower_components/js-xlsx/types/index.d.ts:
 	bower install js-xlsx
 
-.PHONY: build
+.PHONY: build release
