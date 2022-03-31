@@ -141,16 +141,44 @@ async function handleFileAsync(e: Event) {
   const data = await file.arrayBuffer();
   const workbook = XLSX.read(data);
 
-  let result: { skills: HashMap, characteristics?: HashMap, states?: { [key: string]: StateValue } } = { skills: extractSkills(workbook) };
+  let result: {
+    name: string,
+    skills: HashMap,
+    characteristics?: HashMap,
+    states?: { [key: string]: StateValue }
+  } = { name: workbook.Sheets['人物卡']['E3']!.w!, skills: extractSkills(workbook) };
 
   result.characteristics = extractCharacteristics(workbook);
   result.states = extractStates(workbook);
 
   switch (FORMAT) {
     case 'json':
-      out.innerText = JSON.stringify(result);
+      out.innerText = JSON.stringify(result, null, 2);
       break;
     case 'hktrpg':
+      out.innerText = `.char edit name[${result.name}]~\n`
+      if (result.states != undefined) {
+        out.innerText += 'state['
+        for (const st of Object.keys(result.states)) {
+          out.innerText += `${st}:${result.states[st].now}`
+          if (result.states[st].max != undefined) {
+            out.innerText += `/${result.states[st].max}`
+          }
+          out.innerText += ';'
+        }
+        out.innerText += ']~\n'
+      }
+      out.innerText += 'roll['
+      for (const st of Object.keys(result.skills)) {
+        out.innerText += `${st}:cc ${result.skills[st]} ${st};`
+      }
+      if (result.characteristics != undefined) {
+        for (const st of Object.keys(result.characteristics)) {
+          out.innerText += `${st}:cc ${result.characteristics[st]} ${st};`
+        }
+      }
+      out.innerText += ']~\n'
+      break;
     default:
       out.innerText = 'unsupported'
   }
