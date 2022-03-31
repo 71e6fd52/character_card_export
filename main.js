@@ -68,7 +68,7 @@ async function handleFileAsync(e) {
             switch (DEFAULT) {
                 case 'ignore': continue;
                 case 'zero':
-                    result[name_v] = 0;
+                    result[name_v] = -1;
                     break;
                 default:
                     const _check = DEFAULT;
