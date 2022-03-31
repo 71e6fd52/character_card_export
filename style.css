@@ -1,0 +1,68 @@
+input[type=text] {
+  flex-basis: 75%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+label {
+  flex-basis: 25%;
+  margin: auto 0;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+button {
+  font-size: 16px;
+  margin: 12px;
+  padding: 6px 18px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 5px;
+  padding: 20px 0;
+}
+
+.full-line, .item {
+  display: flex;
+  flex: 0 0 50%;
+  margin: 6px 0;
+}
+
+.full-line {
+  flex: 0 0 100%;
+  justify-content: space-between;
+}
+
+.separator {
+  flex: 0 0 100%;
+}
+
+input[type=radio] {
+  display: none;
+}
+
+input[type=radio]:checked + label {
+  border: solid 2px green;
+}
+
+label.selection {
+  font-size: 16px;
+  border: solid 2px grey;
+  border-radius: 5px;
+  padding: 6px;
+  margin: 0 6px;
+  text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+  .item {
+    flex-basis: 100%;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
