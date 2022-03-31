@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>test</title>
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <script type="module" src="main.js"></script>
+  <div class="container">
+    <div class="item">
+      <label for="sheet_name">工作簿名</label>
+      <input type="text" id="sheet_name" name="sheet_name" value="角色卡">
+    </div>
+    <div class="separator"></div>
+    <div class="item">
+      <label for="start_row">技能表开头行号</label>
+      <input type="text" id="start_row" name="start_row" value="16">
+    </div>
+    <div class="item">
+      <label for="end_row">技能表结尾行号</label>
+      <input type="text" id="end_row" name="end_row" value="49">
+    </div>
+    <div class="item">
+      <label for="first_column">技能名称第一列列号</label>
+      <input type="text" id="first_column" name="first_column" value="F">
+    </div>
+    <div class="item">
+      <label for="second_column">技能名称第二列列号</label>
+      <input type="text" id="second_column" name="second_column" value="AB">
+    </div>
+    <div class="full-line">
+      <label>初始值行为：</label>
+
+      <input type="radio" id="ignore_default" name="default">
+      <label for="ignore_default" class="selection">不输出初始值技能</label>
+
+      <input type="radio" id="remain_default" name="default" checked>
+      <label for="remain_default" class="selection">输出初始值技能</label>
+
+      <input type="radio" id="zero_default" name="default">
+      <label for="zero_default" class="selection">初始值技能输出为 0</label>
+    </div>
+    <div class="full-line">
+      <label>现代技能 Ω：</label>
+
+      <input type="radio" id="remain_omega" name="omega" checked>
+      <label for="remain_omega" class="selection">仅去除 Ω 符号</label>
+
+      <input type="radio" id="delete_omega" name="omega">
+      <label for="delete_omega" class="selection">去除现代技能</label>
+    </div>
+  </div>
+  <hr>
+  <div>
+    <input type="file" id="input_xlsx">
+  </div>
+  <hr>
+  <div style="display: flex; justify-content: center;">
+    <button type="button" id="submit">提交</button>
+  </div>
+  <hr>
+  <p id="result"></p>
+</body>
+
+</html>
