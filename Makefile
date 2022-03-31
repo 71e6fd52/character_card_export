@@ -1,7 +1,10 @@
 build: dist/main.js dist/style.css dist/index.html dist/xlsx.mjs
 
-release: dist/main.js dist/style.css dist/index.html dist/xlsx.mjs
+release: build
 	ghp-import -c coccard.yahvk.moe -p dist
+
+clean:
+	rm -r dist bower_components xlsx.d.mts xlsx.mjs
 
 dist/main.js: main.ts xlsx.mjs xlsx.d.mts
 	tsc
