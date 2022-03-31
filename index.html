@@ -12,27 +12,6 @@
 <body>
   <script type="module" src="main.js"></script>
   <div class="container">
-    <div class="item">
-      <label for="sheet_name">工作簿名</label>
-      <input type="text" id="sheet_name" name="sheet_name" value="角色卡">
-    </div>
-    <div class="separator"></div>
-    <div class="item">
-      <label for="start_row">技能表开头行号</label>
-      <input type="text" id="start_row" name="start_row" value="16">
-    </div>
-    <div class="item">
-      <label for="end_row">技能表结尾行号</label>
-      <input type="text" id="end_row" name="end_row" value="49">
-    </div>
-    <div class="item">
-      <label for="first_column">技能名称第一列列号</label>
-      <input type="text" id="first_column" name="first_column" value="F">
-    </div>
-    <div class="item">
-      <label for="second_column">技能名称第二列列号</label>
-      <input type="text" id="second_column" name="second_column" value="AB">
-    </div>
     <div class="full-line">
       <label>初始值行为：</label>
 
@@ -54,6 +33,38 @@
       <input type="radio" id="delete_omega" name="omega">
       <label for="delete_omega" class="selection">去除现代技能</label>
     </div>
+    <div class="full-line">
+      <label for="format">导出格式:</label>
+      <select name="format" id="format">
+        <option value="json" selected>JSON</option>
+        <option value="hktrpg">HKTRPG</option>
+      </select>
+    </div>
+
+    <button type="button" class="collapsible">高级选项</button>
+    <div class="advanced container">
+      <div class="item">
+        <label for="sheet_name">工作簿名</label>
+        <input type="text" id="sheet_name" name="sheet_name" value="角色卡">
+      </div>
+      <div class="separator"></div>
+      <div class="item">
+        <label for="start_row">技能表开头行号</label>
+        <input type="text" id="start_row" name="start_row" value="16">
+      </div>
+      <div class="item">
+        <label for="end_row">技能表结尾行号</label>
+        <input type="text" id="end_row" name="end_row" value="49">
+      </div>
+      <div class="item">
+        <label for="first_column">技能名称第一列列号</label>
+        <input type="text" id="first_column" name="first_column" value="F">
+      </div>
+      <div class="item">
+        <label for="second_column">技能名称第二列列号</label>
+        <input type="text" id="second_column" name="second_column" value="AB">
+      </div>
+    </div>
   </div>
   <hr>
   <div>
@@ -64,10 +75,10 @@
     <button type="button" id="submit">提交</button>
   </div>
   <hr>
-  <p id="result"></p>
+  <pre id="result"></pre>
 
-  <a class="github-fork-ribbon" href="https://github.com/71e6fd52/character_card_export" data-ribbon="Fork me on GitHub"
-    title="Fork me on GitHub">Fork me on GitHub</a>
+  <a class="github-fork-ribbon right-bottom fixed" href="https://github.com/71e6fd52/character_card_export"
+    data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
 </body>
 
 </html>

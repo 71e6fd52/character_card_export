@@ -28,6 +28,7 @@ async function handleFileAsync(e) {
             'remain';
     const OMEGA = document.getElementById("delete_omega").checked ?
         'delete' : 'remain';
+    const FORMAT = getValue("format");
     out.innerText = '';
     const file = files[0];
     const data = await file.arrayBuffer();
@@ -36,26 +37,29 @@ async function handleFileAsync(e) {
     const result = {};
     let j = FIRST_COLUMN;
     for (let i = START_ROW; i <= END_ROW || j == FIRST_COLUMN; ++i) {
+        if (i > END_ROW) {
+            throw "iterate out of table";
+        }
         const name = isMergedStart(sheet, { c: j + 2, r: i }) ?
             getCell(sheet, { c: j + 2, r: i }) :
             getCell(sheet, { c: j, r: i });
+        const init = getCell(sheet, { c: j + 4, r: i });
+        const value = getCell(sheet, { c: j + 12, r: i });
+        if (i == END_ROW && j == FIRST_COLUMN) {
+            j = SECOND_COLUMN;
+            i = START_ROW;
+        }
         if (name == undefined) {
             continue;
         }
-        const init = getCell(sheet, { c: j + 4, r: i });
         if (init == undefined) {
             continue;
         }
-        const value = getCell(sheet, { c: j + 12, r: i });
         if (value == undefined) {
             continue;
         }
         const init_v = init.v;
         const value_v = value.v;
-        if (i == END_ROW && j == FIRST_COLUMN) {
-            j = SECOND_COLUMN;
-            i = START_ROW;
-        }
         let name_v = name.w;
         if (name_v.endsWith("Ω")) {
             if (OMEGA == 'delete') {
@@ -78,6 +82,24 @@ async function handleFileAsync(e) {
             result[name_v] = value_v;
         }
     }
-    out.innerText = JSON.stringify(result);
+    switch (FORMAT) {
+        case 'json':
+            out.innerText = JSON.stringify(result);
+            break;
+        case 'hktrpg':
+        default:
+            out.innerText = 'unsupported';
+    }
 }
 document.getElementById("submit").addEventListener("click", handleFileAsync, false);
+// collapsible
+document.getElementsByClassName("collapsible")[0].addEventListener("click", function () {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "flex") {
+        content.style.display = "none";
+    }
+    else {
+        content.style.display = "flex";
+    }
+});
