@@ -64,5 +64,8 @@ label.selection {
     flex-basis: 100%;
   }
 }
+.github-fork-ribbon::before {
+  background-color: #333 !important;
+}
 
 /*# sourceMappingURL=style.css.map */
