@@ -7,6 +7,7 @@ let SECOND_COLUMN: number;
 
 let DEFAULT: 'ignore' | 'zero' | 'remain';
 let OMEGA: "delete" | "remain";
+let FORMAT: 'json' | 'hktrpg';
 
 type HashMap = { [key: string]: number };
 type StateValue = { now: number, max?: number };
@@ -113,13 +114,65 @@ function extractStates(workbook: XLSX.WorkBook): { [key: string]: StateValue } |
   return states;
 }
 
-async function handleFileAsync(e: Event) {
+function process(workbook: XLSX.WorkBook): string {
+  let result: {
+    name: string,
+    skills: HashMap,
+    characteristics?: HashMap,
+    states?: { [key: string]: StateValue }
+  } = { name: workbook.Sheets['人物卡']['E3']!.w!, skills: extractSkills(workbook) };
+
+  result.characteristics = extractCharacteristics(workbook);
+  result.states = extractStates(workbook);
+  let result_str = '';
+
+  switch (FORMAT) {
+    case 'json':
+      return JSON.stringify(result, null, 2);
+    case 'hktrpg':
+      result_str = `.char edit name[${result.name}]~\n`
+      if (result.states != undefined) {
+        result_str += 'state['
+        for (const st of Object.keys(result.states)) {
+          result_str += `${st}:${result.states[st].now}`
+          if (result.states[st].max != undefined) {
+            result_str += `/${result.states[st].max}`
+          }
+          result_str += ';'
+        }
+        result_str += ']~\n'
+      }
+      result_str += 'roll['
+      for (const st of Object.keys(result.skills)) {
+        result_str += `${st}:cc ${result.skills[st]} ${st};`
+      }
+      if (result.characteristics != undefined) {
+        for (const st of Object.keys(result.characteristics)) {
+          result_str += `${st}:cc ${result.characteristics[st]} ${st};`
+        }
+      }
+      result_str += ']~\n'
+      break;
+    default:
+      result_str = 'unsupported'
+  }
+  return result_str;
+}
+
+async function handleFileAsync(_e: Event) {
+  document.getElementById("submit")!.setAttribute("aria-busy", "true")
+
   const out = document.getElementById("result") as HTMLElement;
+  out.style.display = "block";
   const files = (document.getElementById("input_xlsx") as HTMLInputElement).files;
   if (files == null || files.length == 0) {
     out.innerText = '未上传文件';
+    document.getElementById("submit")!.setAttribute("aria-busy", "false")
     return;
   }
+  const file = files[0];
+  const data = await file.arrayBuffer();
+  const workbook = XLSX.read(data);
 
   START_ROW = XLSX.utils.decode_row(getValue("start_row"));
   END_ROW = XLSX.utils.decode_row(getValue("end_row"));
@@ -134,65 +187,11 @@ async function handleFileAsync(e: Event) {
   OMEGA = (document.getElementById("delete_omega") as HTMLInputElement).checked ?
     'delete' : 'remain';
 
-  const FORMAT = getValue("format") as 'json' | 'hktrpg'
+  FORMAT = getValue("format") as 'json' | 'hktrpg'
 
-  out.innerText = '';
-  const file = files[0];
-  const data = await file.arrayBuffer();
-  const workbook = XLSX.read(data);
+  out.innerText = process(workbook);
 
-  let result: {
-    name: string,
-    skills: HashMap,
-    characteristics?: HashMap,
-    states?: { [key: string]: StateValue }
-  } = { name: workbook.Sheets['人物卡']['E3']!.w!, skills: extractSkills(workbook) };
-
-  result.characteristics = extractCharacteristics(workbook);
-  result.states = extractStates(workbook);
-
-  switch (FORMAT) {
-    case 'json':
-      out.innerText = JSON.stringify(result, null, 2);
-      break;
-    case 'hktrpg':
-      out.innerText = `.char edit name[${result.name}]~\n`
-      if (result.states != undefined) {
-        out.innerText += 'state['
-        for (const st of Object.keys(result.states)) {
-          out.innerText += `${st}:${result.states[st].now}`
-          if (result.states[st].max != undefined) {
-            out.innerText += `/${result.states[st].max}`
-          }
-          out.innerText += ';'
-        }
-        out.innerText += ']~\n'
-      }
-      out.innerText += 'roll['
-      for (const st of Object.keys(result.skills)) {
-        out.innerText += `${st}:cc ${result.skills[st]} ${st};`
-      }
-      if (result.characteristics != undefined) {
-        for (const st of Object.keys(result.characteristics)) {
-          out.innerText += `${st}:cc ${result.characteristics[st]} ${st};`
-        }
-      }
-      out.innerText += ']~\n'
-      break;
-    default:
-      out.innerText = 'unsupported'
-  }
+  document.getElementById("submit")!.setAttribute("aria-busy", "false")
 }
 
 (document.getElementById("submit") as HTMLElement).addEventListener("click", handleFileAsync, false);
-
-// collapsible
-(document.getElementsByClassName("collapsible")[0] as HTMLElement).addEventListener("click", function () {
-  this.classList.toggle("active");
-  var content = this.nextElementSibling as HTMLElement;
-  if (content.style.display === "flex") {
-    content.style.display = "none";
-  } else {
-    content.style.display = "flex";
-  }
-});

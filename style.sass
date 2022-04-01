@@ -1,38 +1,31 @@
-input[type=text]
-  flex-basis: 75%
-  padding: 12px
-  border: 1px solid #ccc
-  border-radius: 4px
+*
   box-sizing: border-box
-  resize: vertical
 
-label
-  flex-basis: 25%
-  margin: auto 0
-  padding: 0 12px
-  font-size: 14px
+@import "pico/scss/pico.scss"
 
-#submit
-  font-size: 16px
-  margin: 12px
-  padding: 6px 18px
+input[type=text], select
+  flex: 1 1 75%
+  margin: 0 !important
 
-.container
+.label
+  flex: 0 0 20%
+  margin: 0 8px 0 14px
+
+.setting
   display: flex
   flex-wrap: wrap
   border-radius: 5px
-  padding: 20px 0
+  padding: 0
 
   .advanced
-    display: none
-    padding: 0 20px 20px 20px
-    background-color: #eee
+    padding: 20px
     border-radius: 0px
 
 %item
   display: flex
   flex: 0 0 50%
   margin: 6px 0
+  align-items: center
 
 .item
   @extend %item
@@ -49,58 +42,67 @@ input[type="radio"]
   display: none
 
 input[type="radio"]:checked + label
-  border: solid 2px green
-
-select
-  font-size: 15px
-  padding: 6px
+  background-color: var(--primary)
+  color: white
+  border: none
 
 label.selection
-  font-size: 16px
-  border: solid 2px grey
-  border-radius: 5px
-  padding: 6px
-  margin: 0 6px
-  text-align: center
+  display: flex !important
+  justify-content: center
+  align-items: center
+  flex-grow: 1
 
   &:hover
     cursor: pointer
 
-pre
-  white-space: pre-wrap
+details
+  flex-basis: 100%
+  padding: 0
+  border: solid 5px #eee
+  border-radius: 10px
+  margin-top: 8px
 
-.collapsible
-  background-color: #eee
-  color: #444
-  cursor: pointer
-  padding: 18px
-  width: 100%
-  border: none
-  text-align: left
-  outline: none
-  font-size: 15px
-  margin: 12px 0 0px 0
+summary
+  padding: 22px 18px
+  background: #eee
+  margin: 0 !important
 
-  .active, &:hover
-    background-color: #ccc
+.github-fork-ribbon::before
+  background-color: #333 !important
 
-.collapsible:after
-  content: '\02795' // +
-  font-size: 13px
-  color: white
-  float: right
-  margin-left: 5px
+:root
+  --font-size: 9px
 
-.active:after
-  content: "\2796" // -
+  @media (min-width: 400px)
+    --font-size: 12px
 
-@media screen and (max-width: 600px)
+  @if $enable-responsive-typography
+    @if map-get($breakpoints, "sm")
+      @media (min-width: map-get($breakpoints, "sm"))
+        --font-size: 13px
+
+    @if map-get($breakpoints, "md")
+      @media (min-width: map-get($breakpoints, "md"))
+        --font-size: 15px
+
+    @if map-get($breakpoints, "lg")
+      @media (min-width: map-get($breakpoints, "lg"))
+        --font-size: 17px
+
+    @if map-get($breakpoints, "xl")
+      @media (min-width: map-get($breakpoints, "xl"))
+        --font-size: 19px
+
+@media (max-width: map-get($breakpoints, "md"))
   .item
     flex-basis: 100%
+
+  .label
+    margin-left: 4px
+
+  summary
+    padding: 12px 16px
 
 // @media screen and (min-width: 1200px)
 //   .item
 //     flex-basis: 33%
-
-.github-fork-ribbon::before
-  background-color: #333 !important
