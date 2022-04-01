@@ -3,79 +3,84 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>COC 角色卡导出</title>
   <link href="style.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+  <link rel="stylesheet" href="gh-fork-ribbon.css" type="text/css" />
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 </head>
 
 <body>
   <script type="module" src="main.js"></script>
-  <div class="container">
-    <div class="full-line">
-      <label>未加点技能行为：</label>
+  <main class="container">
+    <div class="setting">
+      <div class="full-line">
+        <label class="label">未加点技能行为：</label>
 
-      <input type="radio" id="ignore_default" name="default">
-      <label for="ignore_default" class="selection">不输出未加点技能</label>
+        <input type="radio" id="ignore_default" name="default">
+        <label for="ignore_default" role="button" class="contrast outline selection"><span>不输出未加点技能</span></label>
 
-      <input type="radio" id="remain_default" name="default" checked>
-      <label for="remain_default" class="selection">输出未加点技能</label>
+        <input type="radio" id="remain_default" name="default" checked>
+        <label for="remain_default" role="button" class="contrast outline selection"><span>输出未加点技能</span></label>
 
-      <input type="radio" id="zero_default" name="default">
-      <label for="zero_default" class="selection">未加点技能技能值输出为 -1</label>
+        <input type="radio" id="zero_default" name="default">
+        <label for="zero_default" role="button" class="contrast outline selection"><span>未加点技能技能值输出为 -1</span></label>
+      </div>
+      <div class="full-line">
+        <label class="label">现代技能 Ω：</label>
+
+        <input type="radio" id="remain_omega" name="omega" checked>
+        <label for="remain_omega" role="button" class="contrast outline selection"><span>仅去除 Ω 符号</span></label>
+
+        <input type="radio" id="delete_omega" name="omega">
+        <label for="delete_omega" role="button" class="contrast outline selection"><span>去除现代技能</span></label>
+      </div>
+      <div class="full-line">
+        <label class="label" for="format">导出格式:</label>
+        <select name="format" id="format">
+          <option value="json" selected>JSON</option>
+          <option value="hktrpg">HKTRPG</option>
+        </select>
+      </div>
+
+      <details>
+        <summary>高级选项</summary>
+        <div class="advanced setting">
+          <div class="item">
+            <label class="label" for="sheet_name">工作簿名</label>
+            <input type="text" id="sheet_name" name="sheet_name" value="角色卡">
+          </div>
+          <div class="separator"></div>
+          <div class="item">
+            <label class="label" for="start_row">技能表开头行号</label>
+            <input type="text" id="start_row" name="start_row" value="16">
+          </div>
+          <div class="item">
+            <label class="label" for="end_row">技能表结尾行号</label>
+            <input type="text" id="end_row" name="end_row" value="49">
+          </div>
+          <div class="item">
+            <label class="label" for="first_column">技能名称第一列列号</label>
+            <input type="text" id="first_column" name="first_column" value="F">
+          </div>
+          <div class="item">
+            <label class="label" for="second_column">技能名称第二列列号</label>
+            <input type="text" id="second_column" name="second_column" value="AB">
+          </div>
+        </div>
+      </details>
     </div>
-    <div class="full-line">
-      <label>现代技能 Ω：</label>
-
-      <input type="radio" id="remain_omega" name="omega" checked>
-      <label for="remain_omega" class="selection">仅去除 Ω 符号</label>
-
-      <input type="radio" id="delete_omega" name="omega">
-      <label for="delete_omega" class="selection">去除现代技能</label>
+    <hr>
+    <div>
+      <input type="file" id="input_xlsx">
     </div>
-    <div class="full-line">
-      <label for="format">导出格式:</label>
-      <select name="format" id="format">
-        <option value="json" selected>JSON</option>
-        <option value="hktrpg">HKTRPG</option>
-      </select>
+    <hr>
+    <div style="display: flex; justify-content: center;">
+      <button type="button" id="submit">导出</button>
     </div>
-
-    <button type="button" class="collapsible">高级选项</button>
-    <div class="advanced container">
-      <div class="item">
-        <label for="sheet_name">工作簿名</label>
-        <input type="text" id="sheet_name" name="sheet_name" value="角色卡">
-      </div>
-      <div class="separator"></div>
-      <div class="item">
-        <label for="start_row">技能表开头行号</label>
-        <input type="text" id="start_row" name="start_row" value="16">
-      </div>
-      <div class="item">
-        <label for="end_row">技能表结尾行号</label>
-        <input type="text" id="end_row" name="end_row" value="49">
-      </div>
-      <div class="item">
-        <label for="first_column">技能名称第一列列号</label>
-        <input type="text" id="first_column" name="first_column" value="F">
-      </div>
-      <div class="item">
-        <label for="second_column">技能名称第二列列号</label>
-        <input type="text" id="second_column" name="second_column" value="AB">
-      </div>
-    </div>
-  </div>
-  <hr>
-  <div>
-    <input type="file" id="input_xlsx">
-  </div>
-  <hr>
-  <div style="display: flex; justify-content: center;">
-    <button type="button" id="submit">导出</button>
-  </div>
-  <hr>
-  <pre id="result"></pre>
+    <hr>
+    <pre><code id="result" style="display: none;"></code></pre>
+  </main>
 
   <a class="github-fork-ribbon right-bottom fixed" href="https://github.com/71e6fd52/character_card_export"
     data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
