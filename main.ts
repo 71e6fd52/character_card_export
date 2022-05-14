@@ -147,6 +147,7 @@ function process(workbook: XLSX.WorkBook): string {
         result_str += ']~\n'
       }
       result_str += 'roll['
+      result_str += 'sc:cc {san} SanCheck;'
       for (const st of Object.keys(result.skills)) {
         result_str += `${st}:cc ${result.skills[st]} ${st};`
       }
