@@ -103,7 +103,7 @@ function extractStates(workbook: XLSX.WorkBook): { [key: string]: StateValue } |
   const states_names = ['HP', 'MP', 'SAN'];
   for (const name of states_names) {
     let s = workbook.Workbook.Names.find((r) => r.Name == name)
-    let sm = workbook.Workbook.Names.find((r) => r.Name == name + "_MAX")
+    let sm = workbook.Workbook.Names.find((r) => r.Name == name + "_MAX") || workbook.Workbook.Names.find((r) => r.Name == name + "max")
     if (s == undefined) { continue; }
 
     states[name] = { now: getCellByGlobalRef(workbook, s.Ref)!.v as number }
