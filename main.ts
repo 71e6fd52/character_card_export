@@ -134,7 +134,7 @@ function process(workbook: XLSX.WorkBook): string {
     case 'json':
       return JSON.stringify(result, null, 2);
     case 'hktrpg':
-      result_str = `.char edit name[${result.name}]~\n`
+      result_str = `.char add name[${result.name}]~\n`
       if (result.states != undefined) {
         result_str += 'state['
         for (const st of Object.keys(result.states)) {
