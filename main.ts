@@ -82,10 +82,14 @@ function extractCharacteristics(workbook: XLSX.WorkBook): HashMap | undefined {
   if (workbook.Workbook?.Names == undefined) { return undefined; }
 
   const characteristics: { [key: string]: number } = {};
-  const characteristics_names = ['STR', 'CON', 'SIZ', 'DEX', 'APP', 'EDU', 'INT', 'POW'];
+  const characteristics_names = ['STR', 'CON', 'SIZ', 'DEX', 'APP', 'EDU', 'INT', 'POW', 'Luck'];
   for (const name of workbook.Workbook.Names) {
     if (!characteristics_names.includes(name.Name)) { continue }
-    characteristics[name.Name] = getCellByGlobalRef(workbook, name.Ref)!.v as number;
+    if (name.Name == 'Luck') {
+      characteristics['LUK'] = getCellByGlobalRef(workbook, name.Ref)!.v as number;
+    } else {
+      characteristics[name.Name] = getCellByGlobalRef(workbook, name.Ref)!.v as number;
+    }
   }
 
   if (characteristics == {}) { return undefined; }
